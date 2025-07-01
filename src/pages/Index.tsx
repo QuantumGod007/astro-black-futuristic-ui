@@ -68,7 +68,7 @@ const Index = () => {
           <CardContent className="p-6">
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-3">
-                <Calendar className="w-5 h-5 text-white" />
+                <Calendar className="w-5 h-5 text-white drop-shadow-lg" />
                 <label className="text-sm font-medium text-white">
                   Select Date
                 </label>
@@ -92,7 +92,7 @@ const Index = () => {
                 <Button
                   onClick={() => setQuizOpen(true)}
                   variant="outline"
-                  className="border-white/50 text-white hover:bg-white/20 hover:border-white/70 bg-white/10 transition-all duration-200"
+                  className="border-white/70 text-white hover:bg-white/20 hover:border-white bg-white/10 transition-all duration-200"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Quiz
