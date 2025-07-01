@@ -94,19 +94,19 @@ const QuizModal: React.FC<QuizModalProps> = ({ open, onClose }) => {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="bg-black/90 backdrop-blur-xl border-white/20 text-white max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-thin text-center">
+          <DialogTitle className="text-2xl font-thin text-center text-white">
             🚀 Space Quiz Challenge
           </DialogTitle>
         </DialogHeader>
 
         {gameState === 'setup' && (
           <div className="space-y-6">
-            <p className="text-center text-gray-300 font-light">
+            <p className="text-center text-gray-200 font-light">
               Test your knowledge of the cosmos
             </p>
             
             <div className="space-y-4">
-              <label className="text-sm font-medium text-gray-300">
+              <label className="text-sm font-medium text-white">
                 Select Difficulty
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -115,17 +115,17 @@ const QuizModal: React.FC<QuizModalProps> = ({ open, onClose }) => {
                     key={level}
                     className={`cursor-pointer transition-all duration-200 ${
                       difficulty === level 
-                        ? 'bg-white/20 border-white/40' 
-                        : 'bg-white/5 border-white/10 hover:bg-white/10'
+                        ? 'bg-white/30 border-white/60 text-white' 
+                        : 'bg-white/10 border-white/30 hover:bg-white/20 text-gray-200'
                     }`}
                     onClick={() => setDifficulty(level)}
                   >
                     <CardContent className="p-4 text-center">
-                      <div className="flex items-center justify-center gap-2 mb-2">
+                      <div className="flex items-center justify-center gap-2 mb-2 text-white">
                         {getDifficultyIcon(level)}
                         <span className="capitalize font-medium">{level}</span>
                       </div>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-300">
                         {questions[level].length} questions
                       </p>
                     </CardContent>
@@ -136,7 +136,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ open, onClose }) => {
 
             <Button
               onClick={startQuiz}
-              className="w-full bg-white text-black hover:bg-gray-100 transition-all duration-200"
+              className="w-full bg-white text-black hover:bg-gray-200 transition-all duration-200 font-medium"
             >
               Start Quiz
             </Button>
@@ -146,29 +146,29 @@ const QuizModal: React.FC<QuizModalProps> = ({ open, onClose }) => {
         {gameState === 'playing' && currentQuestions.length > 0 && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <Badge variant="outline" className="border-white/30 text-white">
+              <Badge variant="outline" className="border-white/50 text-white bg-white/10">
                 Question {currentIndex + 1} of {currentQuestions.length}
               </Badge>
-              <Badge variant="outline" className="border-white/30 text-white">
+              <Badge variant="outline" className="border-white/50 text-white bg-white/10">
                 Score: {score}
               </Badge>
             </div>
 
-            <Card className="bg-white/5 backdrop-blur-xl border-white/10">
+            <Card className="bg-white/10 backdrop-blur-xl border-white/30">
               <CardContent className="p-6">
-                <h3 className="text-lg mb-6 text-center font-light">
+                <h3 className="text-lg mb-6 text-center font-light text-white">
                   {currentQuestions[currentIndex]?.q}
                 </h3>
 
                 <div className="space-y-3">
                   {currentQuestions[currentIndex]?.c.map((choice, index) => {
-                    let buttonClass = "w-full p-4 text-left bg-white/5 border border-white/20 rounded-lg hover:bg-white/10 transition-all duration-200";
+                    let buttonClass = "w-full p-4 text-left bg-white/10 border border-white/30 rounded-lg hover:bg-white/20 transition-all duration-200 text-white";
                     
                     if (showResult) {
                       if (index === currentQuestions[currentIndex].a) {
-                        buttonClass += " bg-green-500/20 border-green-500/50 text-green-300";
+                        buttonClass += " bg-green-500/30 border-green-400/70 text-green-200";
                       } else if (index === selectedAnswer) {
-                        buttonClass += " bg-red-500/20 border-red-500/50 text-red-300";
+                        buttonClass += " bg-red-500/30 border-red-400/70 text-red-200";
                       }
                     }
 
@@ -193,11 +193,11 @@ const QuizModal: React.FC<QuizModalProps> = ({ open, onClose }) => {
           <div className="space-y-6 text-center">
             <div className="space-y-4">
               <Trophy className="w-16 h-16 mx-auto text-yellow-400" />
-              <h3 className="text-2xl font-light">Quiz Complete!</h3>
-              <div className="text-4xl font-light">
+              <h3 className="text-2xl font-light text-white">Quiz Complete!</h3>
+              <div className="text-4xl font-light text-white">
                 {score} / {currentQuestions.length}
               </div>
-              <p className="text-gray-300">
+              <p className="text-gray-200">
                 {score === currentQuestions.length 
                   ? "Perfect! You're a space expert! 🌟"
                   : score >= currentQuestions.length * 0.7
@@ -211,14 +211,14 @@ const QuizModal: React.FC<QuizModalProps> = ({ open, onClose }) => {
               <Button
                 onClick={resetQuiz}
                 variant="outline"
-                className="flex-1 border-white/30 text-white hover:bg-white/10"
+                className="flex-1 border-white/50 text-white hover:bg-white/20 bg-white/10"
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Try Again
               </Button>
               <Button
                 onClick={onClose}
-                className="flex-1 bg-white text-black hover:bg-gray-100"
+                className="flex-1 bg-white text-black hover:bg-gray-200"
               >
                 Close
               </Button>
