@@ -1,13 +1,14 @@
-
 import React, { useState, useEffect } from 'react';
-import { Calendar, Play, Sparkles, ExternalLink } from 'lucide-react';
+import { Calendar, Play, Sparkles, ExternalLink, Satellite } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
 import QuizModal from '@/components/QuizModal';
 import ApodViewer from '@/components/ApodViewer';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [apodData, setApodData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -62,6 +63,18 @@ const Index = () => {
             Explore the cosmos through NASA's lens. Discover breathtaking imagery and scientific insights from our universe, one day at a time.
           </p>
         </header>
+
+        {/* Navigation */}
+        <div className="flex justify-center mb-8">
+          <Button
+            onClick={() => navigate('/neo-tracker')}
+            variant="outline"
+            className="border-white/70 text-white hover:bg-white/20 hover:border-white bg-white/10 transition-all duration-200"
+          >
+            <Satellite className="w-4 h-4 mr-2" />
+            NEO & ISS Tracker
+          </Button>
+        </div>
 
         {/* Controls */}
         <Card className="max-w-md mx-auto mb-12 bg-white/5 backdrop-blur-xl border-white/10 hover:bg-white/10 transition-all duration-300">
