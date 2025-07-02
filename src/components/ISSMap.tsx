@@ -41,18 +41,28 @@ const ISSMap: React.FC<ISSMapProps> = ({ position }) => {
 
     const initializeMap = () => {
       if (mapRef.current && !mapInstanceRef.current) {
-        mapInstanceRef.current = window.L.map(mapRef.current).setView([0, 0], 2);
+        mapInstanceRef.current = window.L.map(mapRef.current, {
+          // Reduce sensitivity settings
+          zoomControl: true,
+          doubleClickZoom: false,
+          scrollWheelZoom: false,
+          touchZoom: true,
+          dragging: true,
+          zoomSnap: 0.5,
+          zoomDelta: 0.5
+        }).setView([0, 0], 2);
         
         // Use a satellite view for better ISS tracking
         window.L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
           attribution: '© Esri © OpenStreetMap contributors',
-          maxZoom: 18
+          maxZoom: 10,
+          minZoom: 1
         }).addTo(mapInstanceRef.current);
 
         // Create ISS icon
         const issIcon = window.L.divIcon({
-          html: '<div style="font-size: 24px; text-align: center; line-height: 30px;">🛰️</div>',
-          iconSize: [30, 30],
+          html: '<div style="font-size: 28px; text-align: center; line-height: 32px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">🛰️</div>',
+          iconSize: [32, 32],
           className: 'iss-icon'
         });
 
@@ -60,6 +70,11 @@ const ISSMap: React.FC<ISSMapProps> = ({ position }) => {
         
         // Add a popup to the marker
         markerRef.current.bindPopup('International Space Station');
+
+        // Add zoom control with custom position
+        mapInstanceRef.current.addControl(window.L.control.zoom({
+          position: 'topright'
+        }));
       }
     };
 
@@ -78,14 +93,24 @@ const ISSMap: React.FC<ISSMapProps> = ({ position }) => {
     if (position && mapInstanceRef.current && markerRef.current) {
       const { latitude, longitude } = position;
       markerRef.current.setLatLng([latitude, longitude]);
-      mapInstanceRef.current.setView([latitude, longitude], 4);
+      
+      // Less aggressive view changes
+      mapInstanceRef.current.setView([latitude, longitude], 3, {
+        animate: true,
+        duration: 1
+      });
       
       // Update popup content with current coordinates
       markerRef.current.setPopupContent(`
-        <div style="text-align: center; color: #333;">
-          <strong>🛰️ ISS Location</strong><br/>
-          Lat: ${latitude.toFixed(4)}°<br/>
-          Lng: ${longitude.toFixed(4)}°
+        <div style="text-align: center; color: #333; padding: 8px;">
+          <strong style="color: #1f2937;">🛰️ ISS Location</strong><br/>
+          <div style="margin-top: 8px;">
+            <strong>Lat:</strong> ${latitude.toFixed(4)}°<br/>
+            <strong>Lng:</strong> ${longitude.toFixed(4)}°
+          </div>
+          <div style="margin-top: 8px; font-size: 12px; color: #6b7280;">
+            Updated: ${new Date().toLocaleTimeString()}
+          </div>
         </div>
       `);
     }
@@ -106,6 +131,17 @@ const ISSMap: React.FC<ISSMapProps> = ({ position }) => {
           }
           .leaflet-popup-content-wrapper {
             border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          }
+          .leaflet-popup-content {
+            margin: 8px 12px;
+            line-height: 1.4;
+          }
+          .leaflet-container {
+            cursor: grab;
+          }
+          .leaflet-container:active {
+            cursor: grabbing;
           }
         `
       }} />
