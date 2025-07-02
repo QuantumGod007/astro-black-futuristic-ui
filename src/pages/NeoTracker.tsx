@@ -1,8 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { Satellite, Globe, AlertTriangle, CheckCircle, Navigation } from 'lucide-react';
+import { Satellite, Globe, AlertTriangle, CheckCircle, Navigation, ArrowLeft } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ISSMap from '@/components/ISSMap';
 
@@ -36,6 +38,7 @@ interface Astronaut {
 }
 
 const NeoTracker = () => {
+  const navigate = useNavigate();
   const [neos, setNeos] = useState<NEO[]>([]);
   const [issPosition, setIssPosition] = useState<ISSPosition | null>(null);
   const [astronauts, setAstronauts] = useState<Astronaut[]>([]);
@@ -106,6 +109,18 @@ const NeoTracker = () => {
       
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-8">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Button
+            onClick={() => navigate('/')}
+            variant="outline"
+            className="border-white/70 text-white hover:bg-white/20 hover:border-white bg-white/10 transition-all duration-200"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to NASA APOD
+          </Button>
+        </div>
+
         {/* Header */}
         <header className="text-center mb-12 animate-fade-in">
           <div className="inline-flex items-center gap-3 mb-6">
@@ -164,7 +179,7 @@ const NeoTracker = () => {
                     <div>
                       <p className="text-sm text-gray-400">Diameter</p>
                       <p className="text-white font-medium">
-                        ~{parseInt(neo.estimated_diameter.meters.estimated_diameter_max).toLocaleString()} m
+                        ~{parseInt(neo.estimated_diameter.meters.estimated_diameter_max.toString()).toLocaleString()} m
                       </p>
                     </div>
                     
@@ -232,7 +247,7 @@ const NeoTracker = () => {
           
           <Card className="bg-white/5 backdrop-blur-xl border-white/10">
             <CardContent className="p-6">
-              <h3 className="text-lg font-medium text-white mb-4 text-center">Live ISS Location</h3>
+              <h3 className="text-lg font-medium text-white mb-4 text-center">Live ISS Location - Satellite View</h3>
               <ISSMap position={issPosition} />
             </CardContent>
           </Card>
